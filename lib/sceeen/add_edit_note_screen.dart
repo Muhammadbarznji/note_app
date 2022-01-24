@@ -30,10 +30,98 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
     description = widget.note?.description ?? "";
   }
 
+/*  Future<bool?> dialog() {
+   return showDialog(
+      context: context,
+      builder: (BuildContext context) =>
+          AlertDialog(
+            title: const Text("Discard note"),
+            content: const Text("All Changes will be discarded"),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () =>  Navigator.pop(context, false),
+                child: const Text("Cancel"),
+              ),
+              TextButton(
+                onPressed: () =>
+                {
+                   true;
+                },
+                child: const Text("Discard"),
+              ),
+            ],
+          ) ?? false,
+    );
+  }*/
+
+  Future<bool?> _showDialog(context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Discard note"),
+            content: const Text(
+              "All Changes will be discarded",
+              style: TextStyle(color: Colors.red, fontSize: 20),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.blue,
+                child: const Text(
+                  "Cancel",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                onPressed: () {
+                  Navigator.pop(context, false);
+                },
+              ),
+              const SizedBox(
+                width: 50,
+              ),
+              FlatButton(
+                color: Colors.red,
+                child: const Text(
+                  "Discard",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                onPressed: () {
+                  Navigator.pop(context, true);
+                },
+              )
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            isChangeValue
+                ? showDialog(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text("Discard note"),
+                      content: const Text("All Changes will be discarded"),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text("Cancel"),
+                        ),
+                        TextButton(
+                          onPressed: () =>
+                              {Navigator.pop(context), Navigator.pop(context)},
+                          child: const Text("Discard"),
+                        ),
+                      ],
+                    ),
+                  )
+                : Navigator.pop(context);
+          },
+        ),
         actions: [saveButton()],
       ),
       body: Form(
@@ -59,7 +147,6 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
     );
   }
 
-
   Widget saveButton() {
     final isFormValid = title.isNotEmpty && description.isNotEmpty;
     return Padding(
@@ -84,11 +171,6 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
       final isUpdating = widget.note != null;
 
       if (isUpdating) {
-        if(isChangeValue){
-          print("dialog box");
-        }else{
-          print("update");
-        }
         await updateNote();
       } else {
         await addNote();
