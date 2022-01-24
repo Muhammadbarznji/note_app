@@ -17,8 +17,8 @@ class AddEditNoteScreen extends StatefulWidget {
 
 class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
   final _formKey = GlobalKey<FormState>();
+  bool isChangeValue = false;
   late bool isImportant;
-  late int number;
   late String title;
   late String description;
 
@@ -26,7 +26,6 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
   void initState() {
     super.initState();
     isImportant = widget.note?.isImportant ?? false;
-    number = widget.note?.number ?? 0;
     title = widget.note?.title ?? "";
     description = widget.note?.description ?? "";
   }
@@ -34,46 +33,46 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          actions: [saveButton()],
+      appBar: AppBar(
+        actions: [saveButton()],
+      ),
+      body: Form(
+        key: _formKey,
+        child: NoteFormWidget(
+          isImportant: isImportant,
+          title: title,
+          description: description,
+          onChangedImportant: (isImportant) => setState(() {
+            this.isImportant = isImportant;
+            isChangeValue = true;
+          }),
+          onChangedTitle: (title) => setState(() {
+            this.title = title;
+            isChangeValue = true;
+          }),
+          onChangedDescription: (description) => setState(() {
+            this.description = description;
+            isChangeValue = true;
+          }),
         ),
-        body: Form(
-          key: _formKey,
-          child: NoteFormWidget(
-            isImportant: isImportant,
-            number: number,
-            title: title,
-            description: description,
-            onChangedImportant: (isImportant) => setState(() {
-              this.isImportant = isImportant;
-            }),
-            onChangedNumber: (number) => setState(() {
-              this.number = number;
-            }),
-            onChangedTitle: (title) => setState(() {
-              this.title = title;
-            }),
-            onChangedDescription: (description) => setState(() {
-              this.description = description;
-            }),
-          ),
-        ));
+      ),
+    );
   }
-
 
 
   Widget saveButton() {
     final isFormValid = title.isNotEmpty && description.isNotEmpty;
-
     return Padding(
-      padding: const EdgeInsets.all(1),
-      child: ElevatedButton(
+      padding: const EdgeInsets.all(7),
+      child: TextButton(
         style: ElevatedButton.styleFrom(
-          onPrimary: Colors.lightGreenAccent,
-          primary: isFormValid ? null : Colors.purple,
+          onPrimary: Colors.black,
+          primary: Colors.pinkAccent,
+          onSurface: Colors.black,
         ),
-        onPressed: addOrUpdateNote,
-        child: const Text("Save"),
+        onPressed: isFormValid ? addOrUpdateNote : null,
+        child: const Text("Save",
+            style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
       ),
     );
   }
@@ -85,6 +84,11 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
       final isUpdating = widget.note != null;
 
       if (isUpdating) {
+        if(isChangeValue){
+          print("dialog box");
+        }else{
+          print("update");
+        }
         await updateNote();
       } else {
         await addNote();
@@ -95,11 +99,8 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
   }
 
   updateNote() async {
-    final note = widget.note!.copy(
-        isImportant: isImportant,
-        number: number,
-        title: title,
-        description: description);
+    final note = widget.note!
+        .copy(isImportant: isImportant, title: title, description: description);
 
     await NotesDatabase.instance.update(note);
   }
@@ -108,7 +109,6 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
     final note = Note(
         isImportant: isImportant,
         title: title,
-        number: number,
         description: description,
         createdTime: DateTime.now());
 

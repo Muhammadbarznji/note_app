@@ -1,24 +1,21 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class NoteFormWidget extends StatelessWidget {
   const NoteFormWidget(
       {Key? key,
       this.isImportant = false,
-      this.number = 0,
       this.title = '',
       this.description = '',
       required this.onChangedImportant,
-      required this.onChangedNumber,
       required this.onChangedTitle,
       required this.onChangedDescription})
       : super(key: key);
 
   final bool isImportant;
-  final int number;
   final String title;
   final String description;
   final ValueChanged<bool> onChangedImportant;
-  final ValueChanged<int> onChangedNumber;
   final ValueChanged<String> onChangedTitle;
   final ValueChanged<String> onChangedDescription;
 
@@ -26,28 +23,24 @@ class NoteFormWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(8),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Row(
-                children: [
-                  Switch(value: isImportant, onChanged: onChangedImportant),
-/*                  Expanded(
-                      child: Slider(
-                          value: (number).toDouble(),
-                          min: 0,
-                          max: 5,
-                          divisions: 5,
-                          onChanged: (number) =>
-                              onChangedNumber(number.toInt())))*/
-                ],
+              SwitchListTile(
+                value: isImportant,
+                onChanged: onChangedImportant,
+                activeColor: Colors.amber,
+                title: Text(
+                  "Is important",
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
               ),
-              buildTitle(),
+              buildTitle(context),
               const SizedBox(
                 height: 8.0,
               ),
-              buildDescription(),
+              buildDescription(context),
               const SizedBox(
                 height: 16,
               ),
@@ -56,31 +49,22 @@ class NoteFormWidget extends StatelessWidget {
     );
   }
 
-
-  Widget buildTitle() => TextFormField(
+  Widget buildTitle(BuildContext context) => TextFormField(
         maxLines: 1,
         initialValue: title,
-        style: const TextStyle(
-          color: Colors.white70,
-          fontWeight: FontWeight.bold,
-          fontSize: 24,
-        ),
-        decoration: const InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Title',
-          hintStyle: TextStyle(color: Colors.deepOrange),
-        ),
+        style: Theme.of(context).textTheme.headline2,
         validator: (title) => title != null && title.isEmpty
             ? "The title cannot be empty!"
             : null,
         onChanged: onChangedTitle,
       );
 
-  Widget buildDescription() => TextFormField(
-    maxLines: 24,
+  Widget buildDescription(BuildContext context) => TextFormField(
+        maxLines: 15,
         initialValue: description,
-        style: const TextStyle(color: Colors.pinkAccent, fontSize: 18),
+        style: Theme.of(context).textTheme.bodyText1,
         decoration: const InputDecoration(
+          focusedBorder: InputBorder.none,
           border: InputBorder.none,
           hintText: "Type something...",
           hintStyle: TextStyle(color: Colors.blueGrey),

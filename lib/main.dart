@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:note_app_database/sceeen/home_screen.dart';
 
@@ -12,10 +15,65 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Note Application',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        //primaryColor: Colors.amber[800],
+        fontFamily: 'Georgia',
+        appBarTheme: const AppBarTheme(
+          elevation: 0.0,
+          color: Colors.amber,
+          foregroundColor: Colors.black,
+          titleTextStyle: TextStyle(
+            fontSize: 36,
+            color: Colors.black,
+          ),
+        ),
+        inputDecorationTheme: const InputDecorationTheme(
+          border: OutlineInputBorder(
+          ),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              borderSide: BorderSide(color: Colors.amber),
+          ),
+
+          contentPadding: EdgeInsets.symmetric(
+            vertical: 15,
+            horizontal: 18,
+          ),
+          labelStyle: TextStyle(
+            fontSize: 35,
+            decorationColor: Colors.red,
+          ),
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          foregroundColor: Colors.black87,
+          backgroundColor: Colors.amberAccent,
+        ),
+        // Define the default `TextTheme`. Use this to specify the default
+        // text styling for headlines, titles, bodies of text, and more.
+        textTheme: const TextTheme(
+          headline1: TextStyle(
+              fontSize: 48.0, fontWeight: FontWeight.bold, color: Colors.black),
+          headline2: TextStyle(
+              fontSize: 32.0,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'TimeNewRoma',
+              color: Colors.black),
+          headline3: TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+          ),
+          bodyText1: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.normal,
+              height: 1.5,
+              wordSpacing: 0.5),
+          bodyText2: TextStyle(
+            fontSize: 16.0,
+          ),
+        ),
       ),
+      //darkTheme: ThemeData.dark(),
       home: const Home(),
     );
   }

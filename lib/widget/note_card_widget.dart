@@ -3,12 +3,16 @@ import 'package:intl/intl.dart';
 import 'package:note_app_database/model/note.dart';
 
 final _lightColors = [
-  Colors.amber.shade300,
-  Colors.lightGreen.shade300,
-  Colors.lightBlue.shade300,
-  Colors.orange.shade300,
-  Colors.pinkAccent.shade100,
-  Colors.tealAccent.shade100
+  const Color(0xFFFFFFFF),
+  const Color(0xffF28B83),
+  //Color(0xFFFCBC05),
+  const Color(0xFFFFF476),
+  const Color(0xFFCBFF90),
+  const Color(0xFFA7FEEA),
+  const Color(0xFFE6C9A9),
+  const Color(0xFFE8EAEE),
+  const Color(0xFFA7FEEA),
+  const Color(0xFFCAF0F8)
 ];
 
 class NoteCardWidget extends StatelessWidget {
@@ -22,31 +26,37 @@ class NoteCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = _lightColors[index % _lightColors.length];
     final time = DateFormat.yMMMd().format(note.createdTime);
-    final minHeight = getMinHeight(index);
+    final getMinHeight = getNoteBoxHeight(index);
     return Card(
       color: color,
       child: Container(
-        constraints: BoxConstraints(minHeight: minHeight),
+        constraints: BoxConstraints(minHeight: getMinHeight),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                time,
-                style: TextStyle(color: Colors.grey.shade700),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    time,
+                    style: TextStyle(color: Colors.grey.shade700),
+                  ),
+                  Icon(
+                    note.isImportant ? Icons.star_outlined : null,
+                    color: Colors.amber,
+                    size: 28,
+                  )
+                ],
               ),
               const SizedBox(
                 height: 4.0,
               ),
               Text(
                 note.title,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.headline2,
               ),
             ],
           ),
@@ -55,7 +65,7 @@ class NoteCardWidget extends StatelessWidget {
     );
   }
 
- double getMinHeight(int index) {
+  double getNoteBoxHeight(int index) {
     switch (index) {
       case 0:
       case 3:

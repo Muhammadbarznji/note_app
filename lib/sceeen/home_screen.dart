@@ -49,7 +49,6 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: const Text(
           "Note App",
-          style: TextStyle(fontSize: 24.0),
         ),
         actions: [searchButton()],
       ),
@@ -62,14 +61,13 @@ class _HomeState extends State<Home> {
                       "Empty note list!",
                       style: TextStyle(
                         fontSize: 24.0,
-                        color: Colors.deepOrangeAccent,
+                        color: Colors.red,
                       ),
                     ),
                   )
                 : buildNotes(),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.black,
         child: const Icon(Icons.add),
         onPressed: () async {
           await Navigator.of(context).push(
@@ -90,7 +88,7 @@ class _HomeState extends State<Home> {
         staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
         crossAxisCount: 4,
         mainAxisSpacing: 4,
-        crossAxisSpacing: 4,
+        crossAxisSpacing: 3,
         itemBuilder: (context, index) {
           final note = notes[index];
           return GestureDetector(
@@ -116,6 +114,6 @@ class _HomeState extends State<Home> {
       },
       icon: const Icon(
         Icons.search,
-        color: Colors.indigoAccent,
+        size: 32,
       ));
 }
