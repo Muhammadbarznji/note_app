@@ -45,41 +45,80 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Note App",
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            "Note App",
+          ),
+          actions: [searchButton()],
         ),
-        actions: [searchButton()],
-      ),
-      body: Center(
-        child: isLoading
-            ? const CircularProgressIndicator()
-            : notes.isEmpty
-                ? const Center(
-                    child: Text(
-                      "Empty note list!",
-                      style: TextStyle(
-                        fontSize: 24.0,
-                        color: Colors.red,
+        body: Center(
+          child: isLoading
+              ? const CircularProgressIndicator()
+              : notes.isEmpty
+                  ? const Center(
+                      child: Text(
+                        "Empty note list!",
+                        style: TextStyle(
+                          fontSize: 24.0,
+                          color: Colors.red,
+                        ),
                       ),
-                    ),
-                  )
-                : buildNotes(),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () async {
-          await Navigator.of(context).push(
-            MaterialPageRoute(
-                builder: (context) =>
-                    const AddEditNoteScreen()), // add note as parameter
-          );
+                    )
+                  : buildNotes(),
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () async {
+            await Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (context) =>
+                      const AddEditNoteScreen()), // add note as parameter
+            );
 
-          refreshNotes();
-        },
+            refreshNotes();
+          },
+        ),
       ),
     );
+  }
+
+  Future<bool> _onBackPressed() async {
+    return await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+              "Are you sure?",
+              style: TextStyle(color: Colors.red),
+            ),
+            content: const Text(
+              "Do you went to exit an app",
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text(
+                  "Cancel",
+                  style: TextStyle(color: Colors.blue),
+                ),
+                onPressed: () {
+                  Navigator.pop(context, false);
+                },
+              ),
+              TextButton(
+                child: const Text(
+                  "Exit",
+                  style: TextStyle(color: Colors.red),
+                ),
+                onPressed: () {
+                  Navigator.pop(context, true);
+                },
+              )
+            ],
+          );
+        });
   }
 
   Widget? buildNotes() => StaggeredGridView.countBuilder(
