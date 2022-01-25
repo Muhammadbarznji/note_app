@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:note_app_database/database/notes_database.dart';
 import 'package:note_app_database/model/note.dart';
+import 'package:note_app_database/widget/navigation_drawer.dart';
 import 'package:note_app_database/widget/note_card_widget.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
@@ -43,11 +44,13 @@ class _HomeState extends State<Home> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
+        drawer: const NavDrawer(),
         appBar: AppBar(
           title: const Text(
             "Note App",
@@ -58,13 +61,10 @@ class _HomeState extends State<Home> {
           child: isLoading
               ? const CircularProgressIndicator()
               : notes.isEmpty
-                  ? const Center(
+                  ?  Center(
                       child: Text(
                         "Empty note list!",
-                        style: TextStyle(
-                          fontSize: 24.0,
-                          color: Colors.red,
-                        ),
+                        style: Theme.of(context).textTheme.headline2,
                       ),
                     )
                   : buildNotes(),
