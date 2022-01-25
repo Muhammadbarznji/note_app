@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class NoteFormWidget extends StatelessWidget {
@@ -53,6 +52,9 @@ class NoteFormWidget extends StatelessWidget {
         maxLines: 1,
         initialValue: title,
         style: Theme.of(context).textTheme.headline2,
+        decoration: const InputDecoration(
+          hintText: "Title",
+        ),
         validator: (title) => title != null && title.isEmpty
             ? "The title cannot be empty!"
             : null,
