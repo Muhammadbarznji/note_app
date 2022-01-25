@@ -17,7 +17,7 @@ class AddEditNoteScreen extends StatefulWidget {
 
 class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
   final _formKey = GlobalKey<FormState>();
-  bool isChangeValue = false;
+  late bool isChangeValue;
   late bool isImportant;
   late String title;
   late String description;
@@ -28,6 +28,7 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
     isImportant = widget.note?.isImportant ?? false;
     title = widget.note?.title ?? "";
     description = widget.note?.description ?? "";
+    isChangeValue = false;
   }
 
   @override
@@ -133,7 +134,7 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
 
   updateNote() async {
     final note = widget.note!
-        .copy(isImportant: isImportant, title: title, description: description);
+        .copy(isImportant: isImportant, title: title, description: description, lastEditTime: DateTime.now());
 
     await NotesDatabase.instance.update(note);
   }
@@ -143,7 +144,9 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
         isImportant: isImportant,
         title: title,
         description: description,
-        createdTime: DateTime.now());
+        lastEditTime: DateTime.now(),
+        createTime: DateTime.now(),
+        );
 
     await NotesDatabase.instance.create(note);
   }

@@ -23,7 +23,6 @@ class NotesDatabase {
   Future<Database> _initDatabase(String nameDatabase) async {
     final Directory appDocDir = await getApplicationDocumentsDirectory();
     final path = join(appDocDir.toString(), nameDatabase);
-    print(path);
     return await openDatabase(path, version: 1, onCreate: _createDatabase);
   }
 
@@ -39,7 +38,8 @@ class NotesDatabase {
                   ${NoteFields.isImportant} $boolType,
                   ${NoteFields.title} $textType,
                   ${NoteFields.description} $textType,
-                  ${NoteFields.time} $textType
+                  ${NoteFields.createTime} $textType,
+                  ${NoteFields.lastEditTime} $textType
                   )
       ''');
     } catch (e) {
@@ -76,7 +76,7 @@ class NotesDatabase {
 
   Future<List<Note>> readAllNote() async {
     final db = await instance.database;
-    const orderSchema = "${NoteFields.time} ASC";
+    const orderSchema = "${NoteFields.createTime} ASC";
     List<Map<String, dynamic>> result =
         await db.query(tableNotes, orderBy: orderSchema);
 

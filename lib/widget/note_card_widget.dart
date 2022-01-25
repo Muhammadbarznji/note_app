@@ -25,7 +25,9 @@ class NoteCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = _lightColors[index % _lightColors.length];
-    final time = DateFormat.yMMMd().format(note.createdTime);
+    final createTime = DateFormat('dd/MMM/yyy hh:mm').format(note.createTime);
+    final lastEditTime = DateFormat('dd/MMM/yyy hh:mm').format(note.lastEditTime);
+    bool isUpdate = (note.lastEditTime.subtract(const Duration(seconds: 45)).isAfter(note.createTime));
     final getMinHeight = getNoteBoxHeight(index);
     return Card(
       color: color,
@@ -36,13 +38,14 @@ class NoteCardWidget extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    time,
-                    style: TextStyle(color: Colors.grey.shade700),
+                    createTime,
+                    style: const TextStyle(color: Colors.black),
                   ),
                   Icon(
                     note.isImportant ? Icons.star_outlined : null,
@@ -51,6 +54,7 @@ class NoteCardWidget extends StatelessWidget {
                   )
                 ],
               ),
+              Text(isUpdate ? lastEditTime: "", style: const TextStyle(color: Colors.black)),
               const SizedBox(
                 height: 4.0,
               ),
@@ -69,10 +73,10 @@ class NoteCardWidget extends StatelessWidget {
     switch (index) {
       case 0:
       case 3:
-        return 100;
+        return 130;
       case 1:
       case 2:
-        return 150;
+        return 160;
       default:
         return 120;
     }
