@@ -11,25 +11,30 @@ class NavDrawer extends StatelessWidget {
         children:  [
           DrawerHeader(
             child: Text(
-              "Note App",
+              "",
               style: Theme.of(context).textTheme.headline1,
             ),
             decoration: const BoxDecoration(
               color: Colors.amber,
-///add image to header
-/*              image: DecorationImage(
+              image: DecorationImage(
                 fit: BoxFit.fill,
-                image: AssetImage("assets/images/cover.jpg"),
-              ),*/
+                image: AssetImage("assets/images/navigator_cover.jpg"),
+              ),
             ),
           ),
-          const ListTile(
-            leading:Icon(Icons.home),
-            title: Text("Home"),
+           ListTile(
+            leading:const Icon(Icons.home),
+            title: const Text("Home"),
+            onTap: () {
+              print("Home");
+            },
           ),
-          const ListTile(
-            leading: Icon(Icons.star_rate),
-            title: Text("Important"),
+           ListTile(
+            leading:const Icon(Icons.star_rate),
+            title:const Text("Important"),
+             onTap: () {
+              print("Important");
+             },
           )
         ],
       ),
