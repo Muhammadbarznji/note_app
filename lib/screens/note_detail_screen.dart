@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:note_app_database/database/notes_database.dart';
-import 'package:note_app_database/model/note.dart';
-
+import '/database/notes_database.dart';
+import '/model/note.dart';
 import 'add_edit_note_screen.dart';
 import 'home_screen.dart';
 
@@ -19,8 +17,8 @@ class NoteDetailScreen extends StatefulWidget {
 }
 
 class _NoteDetailScreenState extends State<NoteDetailScreen> {
-  late Note? note;
-  bool isLoading = false;
+  late Note? _note;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -30,13 +28,13 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
 
   Future refreshNote() async {
     setState(() {
-      isLoading = true;
+      _isLoading = true;
     });
 
-    note = await NotesDatabase.instance.readNote(widget.noteId);
+    _note = await NotesDatabase.instance.readNote(widget.noteId);
 
     setState(() {
-      isLoading = false;
+      _isLoading = false;
     });
   }
 
@@ -44,9 +42,9 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [editButton(), deleteButton()],
+        actions: [_editButton(), _deleteButton()],
       ),
-      body: isLoading
+      body: _isLoading
           ? const Center(
               child: CircularProgressIndicator(),
             )
@@ -55,13 +53,13 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
               child: ListView(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 children: [
-                  Text(note!.title,
+                  Text(_note!.title,
                       style: Theme.of(context).textTheme.headline1),
                   const SizedBox(
                     height: 15,
                   ),
                   Text(
-                    DateFormat.yMMMd().format(note!.createTime),
+                    DateFormat('dd/MM/yyyy').format(_note!.createTime),
                     style: Theme.of(context).textTheme.headline3,
                   ),
                   const SizedBox(
@@ -79,7 +77,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Text(
-                      note!.description,
+                      _note!.description,
                       //test text "Adapting an app to run on different device types, such as mobile and desktop, requires dealing with mouse and keyboard input, as well as touch input. It also means there are different expectations about the app’s visual density, how component selection works (cascading menus vs bottom sheets, for example), using platform-specific features (such as top-level windows), and more. Adapting an app to run on different device types, such as mobile and desktop, requires dealing with mouse and keyboard input, as well as touch input. It also means there are different expectations about the app’s visual density, how component selection works (cascading menus vs bottom sheets, for example), using platform-specific features (such as top-level windows), and more. Adapting an app to run on different device types, such as mobile and desktop, requires dealing with mouse and keyboard input, as well as touch input. It also means there are different expectations about the app’s visual density, how component selection works (cascading menus vs bottom sheets, for example), using platform-specific features (such as top-level windows), and more. Adapting an app to run on different device types, such as mobile and desktop, requires dealing with mouse and keyboard input, as well as touch input. It also means there are different expectations about the app’s visual density, how component selection works (cascading menus vs bottom sheets, for example), using platform-specific features (such as top-level windows), and more. Adapting an app to run on different device types, such as mobile and desktop, requires dealing with mouse and keyboard input, as well as touch input. It also means there are different expectations about the app’s visual density, how component selection works (cascading menus vs bottom sheets, for example), using platform-specific features (such as top-level windows), and more. Adapting an app to run on different device types, such as mobile and desktop, requires dealing with mouse and keyboard input, as well as touch input. It also means there are different expectations about the app’s visual density, how component selection works (cascading menus vs bottom sheets, for example), using platform-specific features (such as top-level windows), and more.Adapting an app to run on different device types, such as mobile and desktop, requires dealing with mouse and keyboard input, as well as touch input. It also means there are different expectations about the app’s visual density, how component selection works (cascading menus vs bottom sheets, for example), using platform-specific features (such as top-level windows), and more. Adapting an app to run on different device types, such as mobile and desktop, requires dealing with mouse and keyboard input, as well as touch input. It also means there are different expectations about the app’s visual density, how component selection works (cascading menus vs bottom sheets, for example), using platform-specific features (such as top-level windows), and more.",
                       style: Theme.of(context).textTheme.bodyText1,
                     ),
@@ -90,21 +88,21 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
     );
   }
 
-  Widget editButton() => IconButton(
+  Widget _editButton() => IconButton(
         icon: const Icon(
           Icons.edit_outlined,
         ),
         onPressed: () async {
-          if (isLoading) {
+          if (_isLoading) {
             return;
           }
           await Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => AddEditNoteScreen(note: note)));
+              builder: (context) => AddEditNoteScreen(note: _note)));
           refreshNote();
         },
       );
 
-  Widget deleteButton() => IconButton(
+  Widget _deleteButton() => IconButton(
       onPressed: () {
         showDialog(
           context: context,
@@ -118,7 +116,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
               ),
               TextButton(
                 onPressed: () async {
-                  if (isLoading) {
+                  if (_isLoading) {
                     return;
                   }
                   await NotesDatabase.instance.delete(widget.noteId);

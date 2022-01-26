@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:note_app_database/database/notes_database.dart';
-import 'package:note_app_database/model/note.dart';
-import 'package:note_app_database/widget/note_form_widget.dart';
+import '/database/notes_database.dart';
+import '/model/note.dart';
+import '/widget/note_form_widget.dart';
 
 class AddEditNoteScreen extends StatefulWidget {
   final Note? note;
@@ -31,13 +31,15 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
     isChangeValue = false;
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: isChangeValue ? _onBackPressed : null,
       child: Scaffold(
         appBar: AppBar(
-          actions: [saveButton()],
+          actions: [_saveButton()],
         ),
         body: Form(
           key: _formKey,
@@ -99,7 +101,7 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
         });
   }
 
-  Widget saveButton() {
+  Widget _saveButton() {
     final isFormValid = title.isNotEmpty && description.isNotEmpty;
     return Padding(
       padding: const EdgeInsets.all(7),
@@ -109,44 +111,47 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
           primary: Colors.pinkAccent,
           onSurface: Colors.black,
         ),
-        onPressed: isFormValid ? addOrUpdateNote : null,
+        onPressed: isFormValid ? _addOrUpdateNote : null,
         child: const Text("Save",
             style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
       ),
     );
   }
 
-  void addOrUpdateNote() async {
+  void _addOrUpdateNote() async {
     final isValid = _formKey.currentState!.validate();
 
     if (isValid) {
       final isUpdating = widget.note != null;
 
       if (isUpdating) {
-        await updateNote();
+        await _updateNote();
       } else {
-        await addNote();
+        await _addNote();
       }
 
       Navigator.of(context).pop();
     }
   }
 
-  updateNote() async {
-    final note = widget.note!
-        .copy(isImportant: isImportant, title: title, description: description, lastEditTime: DateTime.now());
+  _updateNote() async {
+    final note = widget.note!.copy(
+        isImportant: isImportant,
+        title: title,
+        description: description,
+        lastEditTime: DateTime.now());
 
     await NotesDatabase.instance.update(note);
   }
 
-  addNote() async {
+  _addNote() async {
     final note = Note(
-        isImportant: isImportant,
-        title: title,
-        description: description,
-        lastEditTime: DateTime.now(),
-        createTime: DateTime.now(),
-        );
+      isImportant: isImportant,
+      title: title,
+      description: description,
+      lastEditTime: DateTime.now(),
+      createTime: DateTime.now(),
+    );
 
     await NotesDatabase.instance.create(note);
   }

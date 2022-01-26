@@ -1,8 +1,5 @@
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:note_app_database/sceeen/home_screen.dart';
+import '/screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -49,8 +46,6 @@ class MyApp extends StatelessWidget {
           foregroundColor: Colors.black87,
           backgroundColor: Colors.amberAccent,
         ),
-        // Define the default `TextTheme`. Use this to specify the default
-        // text styling for headlines, titles, bodies of text, and more.
         textTheme: const TextTheme(
           headline1: TextStyle(
               fontSize: 48.0, fontWeight: FontWeight.bold, color: Colors.black),

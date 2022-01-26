@@ -1,9 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:note_app_database/database/notes_database.dart';
-import 'package:note_app_database/model/note.dart';
-import 'package:note_app_database/widget/navigation_drawer.dart';
-import 'package:note_app_database/widget/note_card_widget.dart';
+import '/database/notes_database.dart';
+import '/model/note.dart';
+import '/widget/navigation_drawer.dart';
+import '/widget/note_card_widget.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 import 'add_edit_note_screen.dart';
@@ -17,8 +16,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late List<Note> notes;
-  bool isLoading = false;
+  final GlobalKey _key = GlobalKey();
+  late List<Note> _notes;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -34,16 +34,15 @@ class _HomeState extends State<Home> {
 
   void refreshNotes() async {
     setState(() {
-      isLoading = true;
+      _isLoading = true;
     });
 
-    notes = await NotesDatabase.instance.readAllNote();
+    _notes = await NotesDatabase.instance.readAllNote();
 
     setState(() {
-      isLoading = false;
+      _isLoading = false;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -52,20 +51,27 @@ class _HomeState extends State<Home> {
       child: Scaffold(
         drawer: const NavDrawer(),
         appBar: AppBar(
+          centerTitle: true,
           title: const Text(
             "Note App",
           ),
           actions: [searchButton()],
         ),
         body: Center(
-          child: isLoading
+          child: _isLoading
               ? const CircularProgressIndicator()
-              : notes.isEmpty
-                  ?  Center(
-                      child: Text(
-                        "Empty note list!",
-                        style: Theme.of(context).textTheme.headline2,
-                      ),
+              : _notes.isEmpty
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/images/empty_box.png",
+                        ),
+                        Text(
+                          "Empty list!",
+                          style: Theme.of(context).textTheme.headline2,
+                        ),
+                      ],
                     )
                   : buildNotes(),
         ),
@@ -122,14 +128,15 @@ class _HomeState extends State<Home> {
   }
 
   Widget? buildNotes() => StaggeredGridView.countBuilder(
+        key: _key,
         padding: const EdgeInsets.all(8),
-        itemCount: notes.length,
+        itemCount: _notes.length,
         staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
         crossAxisCount: 4,
         mainAxisSpacing: 4,
         crossAxisSpacing: 3,
         itemBuilder: (context, index) {
-          final note = notes[index];
+          final note = _notes[index];
           return GestureDetector(
             onTap: () async {
               await Navigator.of(context).push(MaterialPageRoute(
@@ -147,9 +154,6 @@ class _HomeState extends State<Home> {
 
   Widget searchButton() => IconButton(
       onPressed: () {
-        if (kDebugMode) {
-          print("This feature is not available for now...!");
-        }
       },
       icon: const Icon(
         Icons.search,

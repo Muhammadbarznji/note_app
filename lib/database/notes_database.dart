@@ -1,8 +1,9 @@
 import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../model/note.dart';
-import 'package:path_provider/path_provider.dart';
+
 
 class NotesDatabase {
   static final NotesDatabase instance = NotesDatabase._init();
@@ -22,7 +23,9 @@ class NotesDatabase {
 
   Future<Database> _initDatabase(String nameDatabase) async {
     final Directory appDocDir = await getApplicationDocumentsDirectory();
+    print("Dir: $appDocDir");
     final path = join(appDocDir.toString(), nameDatabase);
+    print("Path: $path");
     return await openDatabase(path, version: 1, onCreate: _createDatabase);
   }
 

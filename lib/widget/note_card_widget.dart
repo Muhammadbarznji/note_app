@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:note_app_database/model/note.dart';
+import '/model/note.dart';
 
 final _lightColors = [
   const Color(0xFFFFFFFF),
@@ -28,7 +28,7 @@ class NoteCardWidget extends StatelessWidget {
     final createTime = DateFormat('dd/MMM/yyy hh:mm').format(note.createTime);
     final lastEditTime = DateFormat('dd/MMM/yyy hh:mm').format(note.lastEditTime);
     bool isUpdate = (note.lastEditTime.subtract(const Duration(seconds: 45)).isAfter(note.createTime));
-    final getMinHeight = getNoteBoxHeight(index);
+    final getMinHeight = _getNoteBoxHeight(index);
     return Card(
       color: color,
       child: Container(
@@ -69,7 +69,7 @@ class NoteCardWidget extends StatelessWidget {
     );
   }
 
-  double getNoteBoxHeight(int index) {
+  double _getNoteBoxHeight(int index) {
     switch (index) {
       case 0:
       case 3:

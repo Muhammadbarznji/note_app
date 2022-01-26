@@ -35,11 +35,11 @@ class NoteFormWidget extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyText2,
                 ),
               ),
-              buildTitle(context),
+              _buildTitle(context),
               const SizedBox(
                 height: 8.0,
               ),
-              buildDescription(context),
+              _buildDescription(context),
               const SizedBox(
                 height: 16,
               ),
@@ -48,7 +48,8 @@ class NoteFormWidget extends StatelessWidget {
     );
   }
 
-  Widget buildTitle(BuildContext context) => TextFormField(
+  //build note title
+  Widget _buildTitle(BuildContext context) => TextFormField(
         maxLines: 1,
         initialValue: title,
         style: Theme.of(context).textTheme.headline2,
@@ -61,7 +62,8 @@ class NoteFormWidget extends StatelessWidget {
         onChanged: onChangedTitle,
       );
 
-  Widget buildDescription(BuildContext context) => TextFormField(
+  //build note description
+  Widget _buildDescription(BuildContext context) => TextFormField(
         maxLines: 15,
         initialValue: description,
         style: Theme.of(context).textTheme.bodyText1,
