@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:note_app_database/sceeen/home_screen.dart';
+import 'package:note_app_database/sceeen/important_screen.dart';
 
 class NavDrawer extends StatelessWidget {
   const NavDrawer({Key? key}) : super(key: key);
@@ -8,7 +10,7 @@ class NavDrawer extends StatelessWidget {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
-        children:  [
+        children: [
           DrawerHeader(
             child: Text(
               "",
@@ -22,20 +24,30 @@ class NavDrawer extends StatelessWidget {
               ),
             ),
           ),
-           ListTile(
-            leading:const Icon(Icons.home),
+          ListTile(
+            leading: const Icon(
+              Icons.home,
+              color: Colors.black,
+              size: 40,
+            ),
             title: const Text("Home"),
-            onTap: () {
-              print("Home");
+            onTap: () async {
+              await Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => const Home()));
             },
           ),
-           ListTile(
-            leading:const Icon(Icons.star_rate),
-            title:const Text("Important"),
-             onTap: () {
-              print("Important");
-             },
-          )
+          ListTile(
+            leading: const Icon(
+              Icons.star_rate,
+              color: Colors.amber,
+              size: 40,
+            ),
+            title: const Text("Important"),
+            onTap: () async {
+              await Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const ImportantScreen()));
+            },
+          ),
         ],
       ),
     );

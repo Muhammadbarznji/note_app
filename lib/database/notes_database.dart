@@ -74,6 +74,18 @@ class NotesDatabase {
     }
   }
 
+  Future<List<Note>> readImportantNotes() async {
+    final db = await instance.database;
+
+    List<Map<String, dynamic>> result = await db.query(tableNotes,
+        columns: NoteFields.values,
+        where: '${NoteFields.isImportant} = ?',
+        whereArgs: ["1"]);
+
+      return result.map((json) => Note.fromJson(json)).toList();
+
+  }
+
   Future<List<Note>> readAllNote() async {
     final db = await instance.database;
     const orderSchema = "${NoteFields.createTime} ASC";
