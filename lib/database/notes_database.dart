@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../model/note.dart';
+import 'package:sqflite_sqlcipher/sqflite.dart';
 
 
 class NotesDatabase {
@@ -26,7 +26,7 @@ class NotesDatabase {
     print("Dir: $appDocDir");
     final path = join(appDocDir.toString(), nameDatabase);
     print("Path: $path");
-    return await openDatabase(path, version: 1, onCreate: _createDatabase);
+    return await openDatabase(path, version: 1, onCreate: _createDatabase, password: "123");
   }
 
   Future _createDatabase(Database db, int version) async {

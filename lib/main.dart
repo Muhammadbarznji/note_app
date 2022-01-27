@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import '/screens/home_screen.dart';
 
@@ -26,13 +28,11 @@ class MyApp extends StatelessWidget {
           ),
         ),
         inputDecorationTheme: const InputDecorationTheme(
-          border: OutlineInputBorder(
-          ),
+          border: OutlineInputBorder(),
           focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(5.0)),
-              borderSide: BorderSide(color: Colors.amber),
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            borderSide: BorderSide(color: Colors.amber),
           ),
-
           contentPadding: EdgeInsets.symmetric(
             vertical: 15,
             horizontal: 18,
@@ -68,7 +68,68 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      //darkTheme: ThemeData.dark(),
+
+      //Dark mode style
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        dividerColor: Colors.white,
+        fontFamily: 'Georgia',
+        appBarTheme: const AppBarTheme(
+          elevation: 0.0,
+          color: Colors.amber,
+          foregroundColor: Colors.black,
+          titleTextStyle: TextStyle(
+            fontSize: 36,
+            color: Colors.black,
+          ),
+        ),
+        inputDecorationTheme: const InputDecorationTheme(
+          border: OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            borderSide: BorderSide(color: Colors.amber),
+          ),
+          contentPadding: EdgeInsets.symmetric(
+            vertical: 15,
+            horizontal: 18,
+          ),
+          labelStyle: TextStyle(
+            fontSize: 35,
+            decorationColor: Colors.red,
+          ),
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          foregroundColor: Colors.black87,
+          backgroundColor: Colors.amberAccent,
+        ),
+        textTheme: const TextTheme(
+          headline1: TextStyle(
+              fontSize: 48.0, fontWeight: FontWeight.bold, color: Colors.white),
+          headline2: TextStyle(
+              fontSize: 32.0,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'TimeNewRoma',
+              color: Colors.black),
+          headline3: TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+          headline4: TextStyle(
+              fontSize: 32.0,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'TimeNewRoma',
+              color: Colors.white),
+          bodyText1: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.normal,
+              height: 1.5,
+              wordSpacing: 0.5),
+          bodyText2: TextStyle(
+            fontSize: 16.0,
+          ),
+        ),
+      ),
       home: const Home(),
     );
   }

@@ -52,7 +52,7 @@ class NoteFormWidget extends StatelessWidget {
   Widget _buildTitle(BuildContext context) => TextFormField(
         maxLines: 1,
         initialValue: title,
-        style: Theme.of(context).textTheme.headline2,
+        style: Theme.of(context).textTheme.headline4,
         decoration: const InputDecoration(
           hintText: "Title",
         ),

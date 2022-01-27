@@ -65,8 +65,7 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
                   const SizedBox(
                     height: 5,
                   ),
-                  const Divider(
-                    color: Colors.black54,
+                   const Divider(
                     indent: 10,
                     endIndent: 10,
                     thickness: 0.7,
